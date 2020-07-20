@@ -1,10 +1,12 @@
 {% extends "layout.html" %}
 
-{%  block title %}usuário autenticado! {%  endblock %}
+{%  block title %} usuário autenticado! {%  endblock %}
 
 {% block content %}
+  
     <div class="container">
-        <h3>Página inicial</h3>
+        <h3>Bem vindo a Intranet   {{ request.user.first_name  }}</h3>
+        <a href="/logout/" >Logout</a>
 
     </div>
 {% endblock  %}    
