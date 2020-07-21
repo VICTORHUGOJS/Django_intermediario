@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpRequest #Redirec
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.decorators import login_required
-
+from .models import Address
 # Create your views here.
 def login(request : HttpRequest):
     if request.method == 'GET':
@@ -29,3 +29,10 @@ def logout(request):
 @login_required(login_url='/login')        
 def home(request):
     return render(request, 'my_app/home.html')
+
+
+@login_required(login_url='/login')
+def address_list(request):
+    addresses = Address.objects.all()  
+    return render(request, 'my_app/address/list.html', {'addresses': addresses}) #Lista endereços
+    
