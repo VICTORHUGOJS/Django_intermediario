@@ -25,13 +25,14 @@
                     <td>{{ address.city }}</td>
                     <td>{{ address.state }}</td>
                     <td>
-                        
+                        <a class="btn btn-primary" href="/addresses/{{  address.id  }}/update/" >Editar</a> 
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="/addresses/create/"  class="btn btn-primary" >Novo Endereço</a>
-        <a href="/logout/"  class="btn btn-primary" >Logout</a>
+        <a href="/addresses/create"  class="btn btn-primary" >Novo Endereço</a>
+        <a href="/logout/"  class="btn btn-primary">Logout</a>
+       
     </div>
 {% endblock  %}    

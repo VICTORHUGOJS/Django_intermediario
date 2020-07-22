@@ -23,6 +23,7 @@ urlpatterns = [
     path('logout/', views.logout),
     path('home/', views.home),
     path('addresses/', views.address_list),
-    path('addresses/create/', views.address_create)
+    path('addresses/create/', views.address_create),
+    path('addresses/<int:id>/update/', views.address_update)
     
 ]

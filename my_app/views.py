@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.decorators import login_required
 from .models import Address, STATES_CHOICES
+from .forms import AddressForm
 # Create your views here.
 def login(request : HttpRequest):
     if request.method == 'GET':
@@ -33,21 +34,43 @@ def home(request):
 
 @login_required(login_url='/login')
 def address_list(request):
-    addresses = Address.objects.all()  
+    addresses = Address.objects.all()  #cONSULTA TODOS REG NO BD
     return render(request, 'my_app/address/list.html', {'addresses': addresses}) #Lista endereços
 
+
 @login_required(login_url='/login')
-def address_create(request):  #Cadastrar endereco form
+def address_create(request):                #Cadastrar endereco form
+     if request.method == 'GET':
+        #states = STATES_CHOICES
+        form = AddressForm()                #Iniciando formulário
+     else:
+        form = AddressForm(request.POST)
+        if form.is_valid():                    #Se for valido,  create
+            Address.objects.create(             #Get mostrar o form Post cadastrar
+                address=form.cleaned_data['address'],
+                address_complement=form.cleaned_data['address_complement'],
+                city=form.cleaned_data['city'],
+                state=form.cleaned_data['state'],
+                country=form.cleaned_data['country'],
+                user=request.user               #Relacionado o endereço com o usuario
+            )
+            return redirect('/addresses/')
+        
+        return render(request, 'my_app/address/create.html', {'form': form})
+       
+@login_required(login_url='/login')
+def address_update(request,id):  #editar
+     address = Address.objects.get(id=id)
      if request.method == 'GET':
         states = STATES_CHOICES
-        return render(request, 'my_app/address/create.html', {'states': states})
-    
-     Address.objects.create(
-        address=request.POST.get('address'),
-        address_complement=request.POST.get('address_complement'),
-        city=request.POST.get('address_complement'),
-        state=request.POST.get('state'),
-        country=request.POST.get('address_complement'),
-        user=request.user
-    )
+        return render(request, 'my_app/address/update.html', {'states': states, 'address': address})
+
+     address.address=request.POST.get('address')
+     address.address_complement=request.POST.get('address_complement')
+     address.city=request.POST.get('city')
+     address.state=request.POST.get('state')
+     address.country=request.POST.get('country')
+     #address.user=request.user #Relacionado o endereço com o usuario
+     address.save()
+  
      return redirect('/addresses/')

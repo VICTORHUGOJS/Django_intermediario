@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
 
-{%  block title %} Registro de endereço! {%  endblock %}
+{%  block title %} Editar  endereço! {%  endblock %}
 
 {% block content %}
+  
     <div class="container">
         <h3>Cadastre seu endereço, {{ request.user.first_name  }}</h3>
-        <form action="/addresses/create/" method="post">
-            {% csrf_token %}
-            {{  form }}
+        <form action="/addresses/{{ address.id }}/update/" method="post">
+            {%  include 'my_app/address/form.html'  %}
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>
-    
 {% endblock  %}    
